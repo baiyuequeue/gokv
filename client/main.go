@@ -22,7 +22,7 @@ type Message struct {
 
 type MessageResponse struct {
 	Status string
-	Error  string // cant send struct in struct
+	Error  string // cant send struct in struct as bytes by tcp
 	Data   string
 }
 

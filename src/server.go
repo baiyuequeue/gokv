@@ -26,7 +26,7 @@ type MessageRequest struct {
 
 type MessageResponse struct {
 	Status string
-	Error  string // cant send struct in struct
+	Error  string // cant send struct in struct as bytes by tcp
 	Data   string
 }
 
@@ -139,7 +139,6 @@ func (s *Server) HandleGet(params MessageRequest) (resp MessageResponse) {
 		return MessageResponse{"OK", "", value}
 	} else {
 		log.Print("HandleGet 2")
-		// TODO не выводит ошибку, Status="",а Error=<nil>
 		return MessageResponse{"FAIL", "empty value", ""}
 	}
 }
