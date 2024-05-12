@@ -2,7 +2,7 @@ package main
 
 import (
 	"bytes"
-	gob2 "encoding/gob"
+	"encoding/gob"
 	"errors"
 	"fmt"
 	"log"
@@ -20,9 +20,9 @@ type Message struct {
 	Value  string
 }
 
-type Message2 struct {
+type MessageResponse struct {
 	Status string
-	Error  error
+	Error  string // cant send struct in struct
 	Data   string
 }
 
@@ -40,7 +40,7 @@ func main() {
 		fmt.Println(err.Error())
 	} else {
 
-		m := Message{"get", "sanya2", "hui sosi 2"}
+		m := Message{"GET", "test3", "test"}
 		c := &Client{&ls, m}
 
 		err := c.sendRequest()
@@ -53,8 +53,8 @@ func main() {
 func (c *Client) sendRequest() (err error) {
 
 	buf := new(bytes.Buffer)
-	gob := gob2.NewEncoder(buf)
-	err = gob.Encode(&c.mes)
+	gobObj := gob.NewEncoder(buf)
+	err = gobObj.Encode(&c.mes)
 	if err != nil {
 		return err
 	}
@@ -83,9 +83,9 @@ func (c *Client) printResponse() {
 	}
 
 	buf := bytes.NewBuffer(tmp)
-	mes := new(Message2)
-	gob := gob2.NewDecoder(buf)
-	gob.Decode(mes)
+	mes := new(MessageResponse)
+	gobObj := gob.NewDecoder(buf)
+	err = gobObj.Decode(mes)
 
 	log.Println("STATUS: ", mes.Status, " ERROR: ", mes.Error, " DATA: ", mes.Data)
 }
